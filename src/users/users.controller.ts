@@ -18,6 +18,7 @@ import { PatchUserDto } from './dtos/patch-user.dto';
 
 // === Services
 import { UsersService } from './providers/users.service';
+import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
@@ -26,6 +27,23 @@ export class UsersController {
     private readonly usersService: UsersService,
   ) {}
 
+  @ApiOperation({ summary: 'Retrieve users with optional filtering' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of users retrieved successfully.',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Number of users to return',
+    example: 10,
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Page number for pagination',
+    example: 1,
+  })
   @Get('/{:id}')
   public getUsers(
     @Param() params: GetUsersParamDto,
@@ -36,9 +54,8 @@ export class UsersController {
   }
 
   @Post()
-  public createUsers(@Body() body: CreateUserDto) {
-    console.log(body instanceof CreateUserDto);
-    return 'You sent a post request to users endpoint';
+  public createUser(@Body() body: CreateUserDto) {
+    return body;
   }
 
   @Patch()

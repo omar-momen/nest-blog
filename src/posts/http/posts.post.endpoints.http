@@ -1,0 +1,24 @@
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+    "title": "Sample Post Title",
+    "postType": "post",
+    "slug": "sample-post-title",
+    "status": "published",
+    "content": "This is the content of the sample post.",
+    "schema": "{}",
+    "featuredImageUrl": "http://example.com/image.jpg",
+    "publishOn": "2024-06-15T10:00:00Z",
+    "tags": ["nestjs", "typescript", "backend"],
+    "metaOptions": [
+        {
+        "key": "author",
+        "value": "John Doe"
+        },
+        {
+        "key": "category",
+        "value": "Technology"
+        }
+    ]
+}
