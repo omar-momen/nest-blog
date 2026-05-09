@@ -1,6 +1,14 @@
 import { AuthService } from 'src/auth/providers/auth.service';
 import { GetUsersParamDto } from '../dtos/get-users-param.dto';
-import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  forwardRef,
+  BadRequestException,
+  NotFoundException,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -52,25 +60,29 @@ export class UsersService {
     console.log(getUserParamDto, limit, page);
     console.log(isAuth);
 
-    console.log(this.userConfiguration.scopeKey);
-
-    return [
+    throw new HttpException(
       {
-        firstName: 'John',
-        email: 'john@doe.com',
+        statusCode: HttpStatus.MOVED_PERMANENTLY,
+        message: 'Moved Permanently',
+        error: 'This is a test error',
       },
+      HttpStatus.MOVED_PERMANENTLY,
       {
-        firstName: 'Alice',
-        email: 'alice@doe.com',
+        cause: new Error('This is a test error with a cause'),
+        description: 'This is a test description',
       },
-    ];
+    );
   }
 
   /**
    * Find a user by ID
    */
-  public findOneById(id: number) {
-    return this.userRepository.findOne({ where: { id } });
+  public async findOneById(id: number) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   /**
@@ -84,7 +96,7 @@ export class UsersService {
 
     // If user with the same email exists, throw an error
     if (existingUser) {
-      throw new Error('User with this email already exists');
+      throw new BadRequestException('User with this email already exists');
     }
 
     // Create a new user entity and save it to the database

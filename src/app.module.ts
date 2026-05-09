@@ -18,7 +18,7 @@ import databaseConfig from './config/database.config';
 import { environmentValidationSchema } from './config/environment.validation';
 
 /**
- * Current Node environmentname  used to pick `.env.<ENV>` for ConfigModule (falls back to `.env` when unset)
+ * Current Node environmental used to pick `.env.<ENV>` for ConfigModule (falls back to `.env` when unset)
  */
 const ENV = process.env.NODE_ENV;
 

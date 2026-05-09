@@ -88,7 +88,7 @@ export class PostsService {
     const tags = await this.tagsService.findMultipleTags(
       patchPostDto.tags ?? [],
     );
-    if (tags.length !== patchPostDto.tags?.length) {
+    if (!tags || tags.length !== patchPostDto.tags?.length) {
       throw new NotFoundException('One or more tag IDs are invalid');
     }
 
