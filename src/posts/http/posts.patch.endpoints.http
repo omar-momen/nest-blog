@@ -2,5 +2,7 @@ PATCH http://localhost:3000/posts
 Content-Type: application/json
 
 {
-    "id": 1
+    "id": 8,
+    "title": "awesome post title",
+    "tags": [2,4]
 }

@@ -1,9 +1,12 @@
-import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
+/**
+ * Bootstraps the Nest HTTP server, global validation, and Swagger documentation
+ */
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   /*
@@ -23,7 +26,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Blog app api')
     .setDescription('Use the base API url as https://your-domain.com/api')
-    .addServer('/http://localhost:3000', 'Local server')
+    // .addServer('http://localhost:3000', 'Local server')
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);

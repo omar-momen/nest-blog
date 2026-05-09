@@ -1,0 +1,10 @@
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "name": "nestjs",
+    "slug": "nestjs",
+    "description": "Tag for PHP related posts",
+    "schema": "{\"key\": \"value\"}",
+    "featuredImageUrl": "https://example.com/images/php-tag.jpg"
+}

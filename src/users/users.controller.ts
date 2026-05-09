@@ -20,13 +20,24 @@ import { PatchUserDto } from './dtos/patch-user.dto';
 import { UsersService } from './providers/users.service';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
+/**
+ * HTTP controller for user listing, creation, and partial updates
+ */
 @Controller('users')
 export class UsersController {
+  /**
+   * Constructor to inject user-related business logic
+   */
   constructor(
-    // Injecting Users Service
+    /**
+     * Injecting UsersService for persistence and queries
+     */
     private readonly usersService: UsersService,
   ) {}
 
+  /**
+   * Method to retrieve users with optional id filter and pagination
+   */
   @ApiOperation({ summary: 'Retrieve users with optional filtering' })
   @ApiResponse({
     status: 200,
@@ -53,11 +64,17 @@ export class UsersController {
     return this.usersService.findAll(params, limit, page);
   }
 
+  /**
+   * Method to create a new user account
+   */
   @Post()
   public createUser(@Body() body: CreateUserDto) {
-    return body;
+    return this.usersService.create(body);
   }
 
+  /**
+   * Method to partially update user fields (placeholder — returns body as-is)
+   */
   @Patch()
   public patchUser(@Body() body: PatchUserDto) {
     return body;
