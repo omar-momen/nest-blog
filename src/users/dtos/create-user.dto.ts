@@ -32,6 +32,11 @@ export class CreateUserDto {
   @MaxLength(96)
   email!: string;
 
+  /** Google ID of the user (optional, used for google authentication) */
+  @IsString()
+  @IsOptional()
+  googleId?: string;
+
   /** Plain-text password; must meet complexity rules enforced by `@Matches` */
   @IsString()
   @IsNotEmpty()

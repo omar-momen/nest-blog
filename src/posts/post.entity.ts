@@ -84,7 +84,9 @@ export class Post {
   })
   metaOptions?: MetaOption;
 
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.posts, {
+    onDelete: 'CASCADE',
+  })
   author: User;
 
   @ManyToMany(() => Tag, (tag) => tag.posts)

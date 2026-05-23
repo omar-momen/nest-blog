@@ -16,6 +16,30 @@ export const environmentValidationSchema = Joi.object({
   DB_SYNCHRONIZE: Joi.boolean().required(),
   DB_AUTO_LOAD_ENTITIES: Joi.boolean().required(),
 
-  // Test
-  USER_SCOPE_KEY: Joi.string().required(),
+  // JWT
+  JWT_SECRET: Joi.string().required(),
+  JWT_TOKEN_AUDIENCE: Joi.string().required(),
+  JWT_TOKEN_ISSUER: Joi.string().required(),
+  JWT_ACCESS_TOKEN_TTL: Joi.number().required(),
+  JWT_REFRESH_TOKEN_TTL: Joi.number().required(),
+
+  // Google OAuth
+  GOOGLE_CLIENT_ID: Joi.string().required(),
+  GOOGLE_CLIENT_SECRET: Joi.string().required(),
+
+  // API
+  API_VERSION: Joi.string().required(),
+
+  // AWS
+  AWS_PUBLIC_BUCKET_NAME: Joi.string().required(),
+  AWS_REGION: Joi.string().required(),
+  AWS_CLOUD_FRONT_URL: Joi.string().required(),
+  AWS_ACCESS_KEY_ID: Joi.string().required(),
+  AWS_SECRET_ACCESS_KEY: Joi.string().required(),
+
+  // Mail
+  MAIL_HOST: Joi.string().required(),
+  MAIL_PORT: Joi.number().required(),
+  MAIL_USER: Joi.string().required(),
+  MAIL_PASSWORD: Joi.string().required(),
 });

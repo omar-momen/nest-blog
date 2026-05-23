@@ -1,18 +1,17 @@
 POST http://localhost:3000/posts
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoib21hckBtb2FtZW4uY29tIiwiaWF0IjoxNzc5MTA1NzI5LCJleHAiOjE3NzkxMDkzMjksImF1ZCI6ImxvY2FsaG9zdDozMDAwIiwiaXNzIjoibG9jYWxob3N0OjMwMDAifQ.Ft1_IKElZYBYCawCHvp618iFhxS7_JAjyrsQZr-W8Gw
 
 {
-    "title": "Sample Post Title",
+    "title": "Sample Post Title 12",
     "postType": "post",
-    "slug": "sample-post-title-1",
+    "slug": "sample-post-title-12",
     "status": "published",
     "content": "This is the content of the sample post.",
     "schema": "{}",
     "featuredImageUrl": "http://example.com/image.jpg",
-    "publishOn": "2024-06-15T10:00:00Z",
     "metaOptions": {
         "value": "{\"alsolo\": \"True\"}"
     },
-    "authorId": 1,
     "tags": [1]
 }

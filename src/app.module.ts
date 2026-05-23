@@ -17,6 +17,18 @@ import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import { environmentValidationSchema } from './config/environment.validation';
 
+// === Guards
+import { AuthenticationGuard } from 'src/auth/guards/authentication/authentication.guard';
+import { AccessTokenGuard } from './auth/guards/access-token/access-token.guard';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+
+import jwtConfig from 'src/auth/config/jwt.config';
+import { JwtModule } from '@nestjs/jwt';
+
+import { DataResponseInterceptor } from './common/interceptors/data-response/data-response.interceptor';
+import { UploadsModule } from './uploads/uploads.module';
+import { MailModule } from './mail/mail.module';
+
 /**
  * Current Node environmental used to pick `.env.<ENV>` for ConfigModule (falls back to `.env` when unset)
  */
@@ -55,8 +67,25 @@ const ENV = process.env.NODE_ENV;
         ),
       }),
     }),
+    ConfigModule.forFeature(jwtConfig),
+    JwtModule.registerAsync(jwtConfig.asProvider()),
+    UploadsModule,
+    MailModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // Interceptors
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DataResponseInterceptor,
+    },
+    // Guards
+    {
+      provide: APP_GUARD,
+      useClass: AuthenticationGuard,
+    },
+    AccessTokenGuard,
+  ],
 })
 export class AppModule {}

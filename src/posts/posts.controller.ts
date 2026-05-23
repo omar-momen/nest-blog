@@ -7,12 +7,18 @@ import {
   Patch,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
 
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
+
+import { GetPostsDto } from './dtos/get-posts-dto';
+
+import { ActiveUser } from 'src/auth/decorators/active-user.decorator';
+import type { AccessTokenPayload } from 'src/auth/interfaces/access-token-payload.interface';
 
 /**
  * HTTP controller for listing, creating, updating, and deleting posts
@@ -33,8 +39,11 @@ export class PostsController {
    * Method to list posts for a given user id (route: GET /posts/:userId)
    */
   @Get('/{:userId}')
-  public getPosts(@Param('userId') userId: number) {
-    return this.postsService.findAll(userId);
+  public getPosts(
+    @Param('userId') userId: number,
+    @Query() query: GetPostsDto,
+  ) {
+    return this.postsService.findAll(query, userId);
   }
 
   /**
@@ -46,8 +55,11 @@ export class PostsController {
     description: 'The post has been successfully created.',
   })
   @Post()
-  public createPost(@Body() body: CreatePostDto) {
-    return this.postsService.create(body);
+  public createPost(
+    @Body() body: CreatePostDto,
+    @ActiveUser() user: AccessTokenPayload,
+  ) {
+    return this.postsService.create(body, user);
   }
 
   /**

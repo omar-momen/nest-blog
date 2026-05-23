@@ -1,1 +1,5 @@
 GET  http://localhost:3000/posts/
+?limit=6
+&page=1
+&startDate=2026-01-01
+&endDate=2026-01-01

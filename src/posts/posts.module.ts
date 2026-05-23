@@ -8,6 +8,7 @@ import { PostsService } from './providers/posts.service';
 import { UsersModule } from 'src/users/users.module';
 import { MetaOptionsModule } from 'src/meta-options/meta-options.module';
 import { TagsModule } from 'src/tags/tags.module';
+import { PaginationModule } from 'src/common/pagination/pagination.module';
 
 // Entities
 import { MetaOption } from 'src/meta-options/meta-option.entity';
@@ -23,6 +24,7 @@ import { Post } from './post.entity';
     UsersModule,
     MetaOptionsModule,
     TagsModule,
+    PaginationModule,
     TypeOrmModule.forFeature([Post, MetaOption]),
   ],
 })

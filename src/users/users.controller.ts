@@ -5,14 +5,24 @@ import {
   Param,
   Patch,
   Post,
+  Delete,
   Query,
   Body,
   ParseIntPipe,
   DefaultValuePipe,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
+
+// === Decorators
+import { Auth } from 'src/auth/decorators/auth.decorator';
+
+// === Enums
+import { AuthType } from 'src/auth/enums/auth-type.enum';
 
 // === DTOs
 import { CreateUserDto } from './dtos/create-user.dto';
+import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
 
@@ -68,8 +78,18 @@ export class UsersController {
    * Method to create a new user account
    */
   @Post()
+  @Auth(AuthType.None)
+  @UseInterceptors(ClassSerializerInterceptor)
   public createUser(@Body() body: CreateUserDto) {
     return this.usersService.create(body);
+  }
+
+  /**
+   * Create several authenticated users atomically (all succeed or none are persisted)
+   */
+  @Post('bulk')
+  public createManyUsers(@Body() body: CreateManyUsersDto) {
+    return this.usersService.createMany(body.users);
   }
 
   /**
@@ -78,5 +98,13 @@ export class UsersController {
   @Patch()
   public patchUser(@Body() body: PatchUserDto) {
     return body;
+  }
+
+  /**
+   * Method to delete a user by id
+   */
+  @Delete(':id')
+  public deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.delete(id);
   }
 }

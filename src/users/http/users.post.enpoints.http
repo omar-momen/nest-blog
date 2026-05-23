@@ -2,8 +2,31 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "john@doe.com",
-  "password": "Password123#"
+  "firstName": "Omar",
+  "lastName": "Elzhery",
+  "email": "omarelzhery23f666@gmail.com",
+  "password": "123456@moh"
+}
+
+###
+
+POST http://localhost:3000/users/bulk
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoib21hckBtb2FtZW4uY29tIiwiaWF0IjoxNzc4ODU1OTk3LCJleHAiOjE3Nzg4NTk1OTcsImF1ZCI6ImxvY2FsaG9zdDozMDAwIiwiaXNzIjoibG9jYWxob3N0OjMwMDAifQ.HgVVv4i-dJgDgcK2FLTbJdceIJfhcZ9oLGvWFbCarvo
+
+{
+  "users": [
+    {
+      "firstName": "Ada",
+      "lastName": "Lovelace",
+      "email": "ada@example.com",
+      "password": "Password123#"
+    },
+    {
+      "firstName": "Alan",
+      "lastName": "Turing",
+      "email": "alan@example.com",
+      "password": "Password456#"
+    }
+  ]
 }

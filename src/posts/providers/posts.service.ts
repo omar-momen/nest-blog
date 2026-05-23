@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/providers/users.service';
 import { CreatePostDto } from '../dtos/create-post.dto';
 
@@ -10,6 +14,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TagsService } from 'src/tags/providers/tags.service';
 
 import { PatchPostDto } from '../dtos/patch-post.dto';
+import { GetPostsDto } from '../dtos/get-posts-dto';
+import { PaginationProvider } from 'src/common/pagination/providers/pagination-provider';
+import { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
+
+import type { AccessTokenPayload } from 'src/auth/interfaces/access-token-payload.interface';
 
 /**
  * Class to connect to post related operations
@@ -35,31 +44,33 @@ export class PostsService {
      * Injecting TagsService to resolve tag entities by id when creating or updating posts
      */
     private readonly tagsService: TagsService,
+
+    /**
+     * Injecting PaginationProvider to perform pagination operations
+     */
+    private readonly paginationProvider: PaginationProvider,
   ) {}
 
   /**
    * Method to find all the posts
    */
-  public findAll(userId: number) {
-    let user;
-    if (!userId) {
-      user = this.usersService.findOneById(userId);
-      console.log(user);
-    }
-
-    const posts = this.postRepository.find({
-      // Or with eager loading in the entity
-      relations: ['tags', 'metaOptions', 'author'],
+  public async findAll(
+    query: GetPostsDto,
+    userId: number,
+  ): Promise<Paginated<Post>> {
+    console.log(userId);
+    return this.paginationProvider.paginate(query, this.postRepository, {
+      relations: ['author', 'tags', 'metaOptions'],
+      // where: { author: { id: userId } },
     });
-    return posts;
   }
 
   /**
    * Method to create a new post
    */
-  public async create(createPostDto: CreatePostDto) {
+  public async create(createPostDto: CreatePostDto, user: AccessTokenPayload) {
     // Get the author
-    const author = await this.usersService.findOneById(createPostDto.authorId);
+    const author = await this.usersService.findOneById(user['sub']);
     if (!author) {
       throw new NotFoundException('Author not found');
     }
@@ -68,6 +79,9 @@ export class PostsService {
     const tags = await this.tagsService.findMultipleTags(
       createPostDto.tags ?? [],
     );
+    if (!tags || tags.length !== createPostDto.tags?.length) {
+      throw new BadRequestException('One or more tag IDs are invalid');
+    }
 
     // Create a new post
     const post = this.postRepository.create({

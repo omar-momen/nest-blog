@@ -138,13 +138,4 @@ export class CreatePostDto {
   @ValidateNested({ each: true })
   @Type(() => CreateMetaOptionDto) // Transform each item to CreateMetaOptionDto
   metaOptions?: CreateMetaOptionDto;
-
-  /** Primary key of the user who owns this post */
-  @ApiPropertyOptional({
-    example: '1',
-    description: 'The ID of the author of the post',
-  })
-  @IsNotEmpty()
-  @IsInt()
-  authorId: number;
 }
